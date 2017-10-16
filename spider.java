@@ -47,8 +47,9 @@ public class spider {
         catch(IOException e)
         {
             e.printStackTrace();
+            System.out.println("Can not open page: " + url);
+            return Get_Url(url);
         }
-        return null;
     }
 
     private void createUserDatebase()
@@ -119,83 +120,74 @@ public class spider {
         String userBpUrl_2 = user.getBpUrl_2();
         int count = 0;
 
-        try {
-            Document doc = Jsoup.connect(userBpUrl_1)
-                    .ignoreContentType(true)
-                    .data("query", "Java")
-                    .userAgent("Mozilla")
-                    .cookie("auth", "token")
-                    .timeout(3000)
-                    //.post()
-                    .get();
 
-            Elements bpInfo = doc.select("b");
-            for(Element bp : bpInfo)
-            {
-                //System.out.println(bp.outerHtml());
-                String text = bp.text();
-                if(text.equals("Show me more!"))
-                    break;
+        Elements bpInfo_1 = Get_Url(userBpUrl_1).select("b");
+        for(Element bp : bpInfo_1)
+        {
+            //System.out.println(bp.outerHtml());
+            String text = bp.text();
+            if(text.equals("Show me more!"))
+                break;
 
-                if(text.contains("[")) {
-                    //System.out.println(text);
-                    String bid = bp.select("a[href~=/b]").attr("href");
-                    System.out.println(bid);
-                    String bpName = bp.select("a[href~=/b]").text();
-                    System.out.println("name is : " + bpName);
-                    String mod = "";
-                    if(text.contains("HR"))
-                    {
-                        mod += "HR,";
-                    }
-                    if(text.contains("DT"))
-                    {
-                        mod += "DT,";
-                    }
-                    if(text.contains("HD"))
-                    {
-                        mod += "HD,";
-                    }
-                    if(text.contains("FL"))
-                    {
-                        mod += "FL,";
-                    }
-                    if(text.contains("EZ"))
-                    {
-                        mod += "EZ,";
-                    }
-                    if(text.contains("NC"))
-                    {
-                        mod += "NC,";
-                    }
-                    if(text.contains("HT"))
-                    {
-                        mod += "HT,";
-                    }
-                    if(mod == "")
-                        mod = "none";
-                    System.out.println("mod is:" + mod);
-
-                    if(!beatMapDB.containsKey(bid))
-                    {
-                        beatMapInfo map = new beatMapInfo(bpName, bid);
-                        getSongInfo(map);
-                        map.Out();
-                        user.addBP(map,count, mod);
-                        beatMapDB.put(bid,map);
-                    }
-                    else
-                    {
-                        user.addBP(beatMapDB.get(bid), count, mod);
-                        System.out.println("database have this map!");
-                        beatMapDB.get(bid).Out();
-                    }
-                    count++;
+            if(text.contains("[")) {
+                //System.out.println(text);
+                String bid = bp.select("a[href~=/b]").attr("href");
+                System.out.println(bid);
+                String bpName = bp.select("a[href~=/b]").text();
+                System.out.println("name is : " + bpName);
+                String mod = "";
+                if(text.contains("HR"))
+                {
+                    mod += "HR,";
                 }
-                else if(text.contains("pp")) {
-                    System.out.println("this is pp value: " + text);
+                if(text.contains("DT"))
+                {
+                    mod += "DT,";
                 }
+                if(text.contains("HD"))
+                {
+                    mod += "HD,";
+                }
+                if(text.contains("FL"))
+                {
+                    mod += "FL,";
+                }
+                if(text.contains("EZ"))
+                {
+                    mod += "EZ,";
+                }
+                if(text.contains("NC"))
+                {
+                    mod += "NC,";
+                }
+                if(text.contains("HT"))
+                {
+                    mod += "HT,";
+                }
+                if(mod == "")
+                    mod = "none";
+                System.out.println("mod is:" + mod);
+
+                if(!beatMapDB.containsKey(bid))
+                {
+                    beatMapInfo map = new beatMapInfo(bpName, bid);
+                    getSongInfo(map);
+                    map.Out();
+                    user.addBP(map,count, mod);
+                    beatMapDB.put(bid,map);
+                }
+                else
+                {
+                    user.addBP(beatMapDB.get(bid), count, mod);
+                    System.out.println("database have this map!");
+                    beatMapDB.get(bid).Out();
+                }
+                count++;
             }
+            else if(text.contains("pp")) {
+                System.out.println("this is pp value: " + text);
+            }
+        }
 /*
             Elements bpInfo = doc.select("a[href~=/b]");
             for(Element bp : bpInfo)
@@ -219,76 +211,61 @@ public class spider {
                 }
                 count++;
             }*/
-        }
-        catch(IOException e)
-        {
-            e.printStackTrace();
-        }
 
-        try {
-            Document doc = Jsoup.connect(userBpUrl_2)
-                    .ignoreContentType(true)
-                    .data("query", "Java")
-                    .userAgent("Mozilla")
-                    .cookie("auth", "token")
-                    .timeout(3000)
-                    //.post()
-                    .get();
 
-            Elements bpInfo = doc.select("b");
-            for (Element bp : bpInfo) {
-                //System.out.println(bp.outerHtml());
-                String text = bp.text();
-                if (text.equals("Show me more!"))
-                    break;
+        Elements bpInfo_2 = Get_Url(userBpUrl_2).select("b");
+        for (Element bp : bpInfo_2) {
+            //System.out.println(bp.outerHtml());
+            String text = bp.text();
+            if (text.equals("Show me more!"))
+                break;
 
-                if (text.contains("[")) {
-                    //System.out.println(text);
-                    String bid = bp.select("a[href~=/b]").attr("href");
-                    System.out.println(bid);
-                    String bpName = bp.select("a[href~=/b]").text();
-                    System.out.println("name is : " + bpName);
-                    String mod = "";
-                    if (text.contains("HR")) {
-                        mod += "HR,";
-                    }
-                    if (text.contains("DT")) {
-                        mod += "DT,";
-                    }
-                    if (text.contains("HD")) {
-                        mod += "HD,";
-                    }
-                    if (text.contains("FL")) {
-                        mod += "FL,";
-                    }
-                    if (text.contains("EZ")) {
-                        mod += "EZ,";
-                    }
-                    if (text.contains("NC")) {
-                        mod += "NC,";
-                    }
-                    if (text.contains("HT")) {
-                        mod += "HT,";
-                    }
-                    if (mod == "")
-                        mod = "none";
-                    System.out.println("mod is:" + mod);
-
-                    if (!beatMapDB.containsKey(bid)) {
-                        beatMapInfo map = new beatMapInfo(bpName, bid);
-                        getSongInfo(map);
-                        map.Out();
-                        user.addBP(map, count, mod);
-                        beatMapDB.put(bid, map);
-                    } else {
-                        user.addBP(beatMapDB.get(bid), count, mod);
-                        System.out.println("database have this map!");
-                        beatMapDB.get(bid).Out();
-                    }
-                    count++;
-                } else if (text.contains("pp")) {
-                    System.out.println("this is pp value: " + text);
+            if (text.contains("[")) {
+                //System.out.println(text);
+                String bid = bp.select("a[href~=/b]").attr("href");
+                System.out.println(bid);
+                String bpName = bp.select("a[href~=/b]").text();
+                System.out.println("name is : " + bpName);
+                String mod = "";
+                if (text.contains("HR")) {
+                    mod += "HR,";
                 }
+                if (text.contains("DT")) {
+                    mod += "DT,";
+                }
+                if (text.contains("HD")) {
+                    mod += "HD,";
+                }
+                if (text.contains("FL")) {
+                    mod += "FL,";
+                }
+                if (text.contains("EZ")) {
+                    mod += "EZ,";
+                }
+                if (text.contains("NC")) {
+                    mod += "NC,";
+                }
+                if (text.contains("HT")) {
+                    mod += "HT,";
+                }
+                if (mod == "")
+                    mod = "none";
+                System.out.println("mod is:" + mod);
+
+                if (!beatMapDB.containsKey(bid)) {
+                    beatMapInfo map = new beatMapInfo(bpName, bid);
+                    getSongInfo(map);
+                    map.Out();
+                    user.addBP(map, count, mod);
+                    beatMapDB.put(bid, map);
+                } else {
+                    user.addBP(beatMapDB.get(bid), count, mod);
+                    System.out.println("database have this map!");
+                    beatMapDB.get(bid).Out();
+                }
+                count++;
+            } else if (text.contains("pp")) {
+                System.out.println("this is pp value: " + text);
             }
         }
         /*try {
@@ -320,140 +297,102 @@ public class spider {
                 count++;
             }
         }*/
-        catch(IOException e)
-        {
-            e.printStackTrace();
-        }
     }
 
     private void getSongInfo(beatMapInfo map)
     {
-        try {
-            Document doc = Jsoup.connect(map.link())
-                    .ignoreContentType(true)
-                    .data("query", "Java")
-                    .userAgent("Mozilla")
-                    .cookie("auth", "token")
-                    .timeout(3000)
-                    //.post()
-                    .get();
-
-            Elements bpInfo = doc.select("div.active");
-            //Element bpInfo = doc.select("table[id]").first();
-            //Elements trs = bpInfo.select("tr");
-            double[] info = new double[5];
-            int count = 0;
-            for(Element tr : bpInfo)
-            {
-                String text = tr.attr("style");
-                info[count] = Double.parseDouble(getNumbers(text));
-                //System.out.println(info[count]);
-                count++;
-            }
-            String bpm;
-            String drain;
-            Elements info2 = doc.select("td[class=colour]");
-            drain = info2.get(8).text();
-            bpm = info2.get(11).text();
-            map.setInfo(info, bpm, drain);
-
-        }
-        catch(IOException e)
+        Document doc = Get_Url(map.link());
+        Elements bpInfo = doc.select("div.active");
+        //Element bpInfo = doc.select("table[id]").first();
+        //Elements trs = bpInfo.select("tr");
+        double[] info = new double[5];
+        int count = 0;
+        for(Element tr : bpInfo)
         {
-            e.printStackTrace();
-            System.out.println(map.name());
+            String text = tr.attr("style");
+            info[count] = Double.parseDouble(getNumbers(text));
+            //System.out.println(info[count]);
+            count++;
         }
+        String bpm;
+        String drain;
+        Elements info2 = doc.select("td[class=colour]");
+        drain = info2.get(8).text();
+        bpm = info2.get(11).text();
+        map.setInfo(info, bpm, drain);
     }
 
     private void getGenerelInfo(UserInfo user)
     {
         String userGenerelUrl = user.getInfoUrl();
-        try
-        {
-            Document doc = Jsoup.connect(userGenerelUrl)
-                    .ignoreContentType(true)
-                    .data("query", "Java")
-                    .userAgent("Mozilla")
-                    .cookie("auth", "token")
-                    .timeout(3000)
-                    //.post()
-                    .get();
 
-            Elements generel_Info = doc.select("div.profileStatLine");
-            for (Element info : generel_Info)
+        Elements generel_Info = Get_Url(userGenerelUrl).select("div.profileStatLine");
+        for (Element info : generel_Info)
+        {
+            String linkText = info.text();
+            //System.out.println(linkText);
+            String regGen = "[^#.0-9]";
+            Pattern p = Pattern.compile(regGen);
+            Matcher m = p.matcher(linkText);
+            String infor = m.replaceAll("").trim();
+            if(linkText.contains("Performance:"))
             {
-                String linkText = info.text();
-                //System.out.println(linkText);
-                String regGen = "[^#.0-9]";
-                Pattern p = Pattern.compile(regGen);
-                Matcher m = p.matcher(linkText);
-                String infor = m.replaceAll("").trim();
-                if(linkText.contains("Performance:"))
-                {
-                    //System.out.println(infor.split("#")[0]);
-                    user.setPP(Integer.parseInt(infor.split("#")[0]));
-                    user.setRank(Integer.parseInt(infor.split("#")[1]));
-                    user.setLRank(Integer.parseInt(infor.split("#")[2]));
-                }
-                else if(linkText.contains("Ranked Score"))
-                {
-                    //System.out.println(infor);
-                    user.setRS(Long.parseLong(infor));
-                }
-                else if(linkText.contains("Accuracy"))
-                {
-                    //System.out.println(infor);
-                    user.setACC(Double.parseDouble(infor));
-                }
-                else if(linkText.contains("Count"))
-                {
-                    //System.out.println(infor);
-                    user.setPC(Integer.parseInt(infor));
-                }
-                else if(linkText.contains("Time"))
-                {
-                    //System.out.println(infor);
-                    user.setPT(Integer.parseInt(infor));
-                }
-                else if(linkText.contains("Total Score"))
-                {
-                    //System.out.println(infor);
-                    user.setTS(Long.parseLong(infor));
-                }
-                else if(linkText.contains("Level"))
-                {
-                    //System.out.println(infor);
-                    user.setLv(Integer.parseInt(infor));
-                }
-                else if(linkText.contains("Hits"))
-                {
-                    //System.out.println(infor);
-                    user.setTTH(Long.parseLong(infor));
-                }
-                else if(linkText.contains("Combo"))
-                {
-                    //System.out.println(infor);
-                    user.setMaxCombo(Integer.parseInt(infor));
-                }
-                else if(linkText.contains("Kudosu"))
-                {
-                    //System.out.println(infor);
-                    user.setKudosu(Integer.parseInt(infor));
-                }
-                else if(linkText.contains("Replays"))
-                {
-                    //System.out.println(infor);
-                    user.setReplays(Integer.parseInt(infor));
-                }
+                //System.out.println(infor.split("#")[0]);
+                user.setPP(Integer.parseInt(infor.split("#")[0]));
+                user.setRank(Integer.parseInt(infor.split("#")[1]));
+                user.setLRank(Integer.parseInt(infor.split("#")[2]));
             }
-
+            else if(linkText.contains("Ranked Score"))
+            {
+                //System.out.println(infor);
+                user.setRS(Long.parseLong(infor));
+            }
+            else if(linkText.contains("Accuracy"))
+            {
+                //System.out.println(infor);
+                user.setACC(Double.parseDouble(infor));
+            }
+            else if(linkText.contains("Count"))
+            {
+                //System.out.println(infor);
+                user.setPC(Integer.parseInt(infor));
+            }
+            else if(linkText.contains("Time"))
+            {
+                //System.out.println(infor);
+                user.setPT(Integer.parseInt(infor));
+            }
+            else if(linkText.contains("Total Score"))
+            {
+                //System.out.println(infor);
+                user.setTS(Long.parseLong(infor));
+            }
+            else if(linkText.contains("Level"))
+            {
+                //System.out.println(infor);
+                user.setLv(Integer.parseInt(infor));
+            }
+            else if(linkText.contains("Hits"))
+            {
+                //System.out.println(infor);
+                user.setTTH(Long.parseLong(infor));
+            }
+            else if(linkText.contains("Combo"))
+            {
+                //System.out.println(infor);
+                user.setMaxCombo(Integer.parseInt(infor));
+            }
+            else if(linkText.contains("Kudosu"))
+            {
+                //System.out.println(infor);
+                user.setKudosu(Integer.parseInt(infor));
+            }
+            else if(linkText.contains("Replays"))
+            {
+                //System.out.println(infor);
+                user.setReplays(Integer.parseInt(infor));
+            }
         }
-        catch(IOException e)
-        {
-            e.printStackTrace();
-        }
-
-
     }
 
     public static void main(String[] args)
@@ -466,6 +405,7 @@ public class spider {
         dataList.add("1,张三,男");
         dataList.add("2,李四,男");
         dataList.add("3,小红,女");
-        boolean isSuccess=CSVUtils.exportCsv(new File("E:/python/ljq.csv"), dataList);*/
+        boolean isSuccess=CSVUtils.exportCsv(new File("E:/python/ljq.csv"), dataList);
+        */
     }
 }
