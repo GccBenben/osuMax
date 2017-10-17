@@ -38,10 +38,10 @@ public class UserInfo {
         setLink();
     }
 
-    public void addBP(beatMapInfo map, int count, String mod)
+    public void addBP(bpInfo newBP, int count)
     {
-        bp[count] = new bpInfo(map);
-        bp[count].addMod(mod);
+        bp[count] = newBP;
+        System.out.println(newBP.out());
     }
 
     public void setID(String ID)
