@@ -41,7 +41,7 @@ public class UserInfo {
     public void addBP(bpInfo newBP, int count)
     {
         bp[count] = newBP;
-        System.out.println(newBP.out());
+        //System.out.println(newBP.out());
     }
 
     public void setID(String ID)
@@ -134,6 +134,23 @@ public class UserInfo {
 
     public String getBpUrl_1(){ return bpUrl_1;}
     public String getBpUrl_2(){ return bpUrl_2;}
+
+    public void anayliseBP()
+    {
+        System.out.println(bp.length);
+        int bpm_180 = 0;
+        int bpm_200 = 0;
+        int bpm_220 = 0;
+        int bpm_240 = 0;
+        int bpm_260 = 0;
+        int bpm_280 = 0;
+        int bpm_300 = 0;
+        int bpm_300plus = 0;
+        for(bpInfo theBP : bp)
+        {
+            theBP.getBPM();
+        }
+    }
 
     private void setLink()
     {
