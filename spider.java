@@ -101,6 +101,7 @@ public class spider {
             user.setRank(rank);
             userList.put(rank,user);
             user.outInfo();
+            user.anayliseBP();
             rank++;
             System.out.println("\n\n\n");
         }
@@ -161,7 +162,7 @@ public class spider {
                 }
                 if (mod.equals(""))
                     mod = "none";
-                System.out.println("mod is:" + mod);
+                //System.out.println("mod is:" + mod);
 
                 beatMapInfo map;
                 if (!beatMapDB.containsKey(bid)) {
