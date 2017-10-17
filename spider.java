@@ -102,7 +102,7 @@ public class spider {
             userList.put(rank,user);
             user.outInfo();
             rank++;
-            return;
+            System.out.println("\n\n\n");
         }
     }
 
@@ -121,71 +121,70 @@ public class spider {
         int count = 0;
 
 
+        String bid = "";
+        String mod = "";
+        bpInfo newBP = new bpInfo();;
         Elements bpInfo_1 = Get_Url(userBpUrl_1).select("b");
         for(Element bp : bpInfo_1)
         {
-            //System.out.println(bp.outerHtml());
             String text = bp.text();
-            if(text.equals("Show me more!"))
+            if (text.equals("Show me more!"))
                 break;
 
-            if(text.contains("[")) {
+            if (text.contains("[")) {
                 //System.out.println(text);
-                String bid = bp.select("a[href~=/b]").attr("href");
-                System.out.println(bid);
+                bid = bp.select("a[href~=/b]").attr("href");
+                //System.out.println(bid);
                 String bpName = bp.select("a[href~=/b]").text();
-                System.out.println("name is : " + bpName);
-                String mod = "";
-                if(text.contains("HR"))
-                {
+                //System.out.println("name is : " + bpName);
+                mod = "";
+                if (text.contains("HR")) {
                     mod += "HR,";
                 }
-                if(text.contains("DT"))
-                {
+                if (text.contains("DT")) {
                     mod += "DT,";
                 }
-                if(text.contains("HD"))
-                {
+                if (text.contains("HD")) {
                     mod += "HD,";
                 }
-                if(text.contains("FL"))
-                {
+                if (text.contains("FL")) {
                     mod += "FL,";
                 }
-                if(text.contains("EZ"))
-                {
+                if (text.contains("EZ")) {
                     mod += "EZ,";
                 }
-                if(text.contains("NC"))
-                {
+                if (text.contains("NC")) {
                     mod += "NC,";
                 }
-                if(text.contains("HT"))
-                {
+                if (text.contains("HT")) {
                     mod += "HT,";
                 }
-                if(mod == "")
+                if (mod.equals(""))
                     mod = "none";
-                System.out.println("mod is:" + mod);
+                //System.out.println("mod is:" + mod);
 
-                if(!beatMapDB.containsKey(bid))
-                {
-                    beatMapInfo map = new beatMapInfo(bpName, bid);
+                beatMapInfo map;
+                if (!beatMapDB.containsKey(bid)) {
+                    map = new beatMapInfo(bpName, bid);
                     getSongInfo(map);
-                    map.Out();
-                    user.addBP(map,count, mod);
-                    beatMapDB.put(bid,map);
-                }
-                else
-                {
-                    user.addBP(beatMapDB.get(bid), count, mod);
+                    //map.Out();
+                    beatMapDB.put(bid, map);
+                } else {
+                    map = beatMapDB.get(bid);
                     System.out.println("database have this map!");
-                    beatMapDB.get(bid).Out();
+                    //beatMapDB.get(bid).Out();
                 }
-                count++;
-            }
-            else if(text.contains("pp")) {
-                System.out.println("this is pp value: " + text);
+                newBP = new bpInfo(map, mod);
+            } else if (text.contains("pp")) {
+                //System.out.println("this is pp value: " + text);
+                if(!bid.equals("")) {
+                    newBP.addPP(text);
+                    user.addBP(newBP, count);
+                    count++;
+                }
+                else{
+                    System.out.println("error!!!!!   " + bid);
+                }
             }
         }
 /*
@@ -222,11 +221,11 @@ public class spider {
 
             if (text.contains("[")) {
                 //System.out.println(text);
-                String bid = bp.select("a[href~=/b]").attr("href");
-                System.out.println(bid);
+                bid = bp.select("a[href~=/b]").attr("href");
+                //System.out.println(bid);
                 String bpName = bp.select("a[href~=/b]").text();
-                System.out.println("name is : " + bpName);
-                String mod = "";
+                //System.out.println("name is : " + bpName);
+                mod = "";
                 if (text.contains("HR")) {
                     mod += "HR,";
                 }
@@ -248,24 +247,33 @@ public class spider {
                 if (text.contains("HT")) {
                     mod += "HT,";
                 }
-                if (mod == "")
+                if (mod.equals(""))
                     mod = "none";
-                System.out.println("mod is:" + mod);
+                //System.out.println("mod is:" + mod);
 
+                beatMapInfo map;
                 if (!beatMapDB.containsKey(bid)) {
-                    beatMapInfo map = new beatMapInfo(bpName, bid);
+                    map = new beatMapInfo(bpName, bid);
                     getSongInfo(map);
-                    map.Out();
-                    user.addBP(map, count, mod);
+                    //map.Out();
                     beatMapDB.put(bid, map);
                 } else {
-                    user.addBP(beatMapDB.get(bid), count, mod);
+                    map = beatMapDB.get(bid);
                     System.out.println("database have this map!");
-                    beatMapDB.get(bid).Out();
+                    //beatMapDB.get(bid).Out();
                 }
-                count++;
+                newBP = new bpInfo(map, mod);
+
             } else if (text.contains("pp")) {
-                System.out.println("this is pp value: " + text);
+                //System.out.println("this is pp value: " + text);
+                if(!bid.equals("")) {
+                    newBP.addPP(text);
+                    user.addBP(newBP, count);
+                    count++;
+                }
+                else{
+                    System.out.println("error!!!!!");
+                }
             }
         }
         /*try {
@@ -344,52 +352,42 @@ public class spider {
             }
             else if(linkText.contains("Ranked Score"))
             {
-                //System.out.println(infor);
                 user.setRS(Long.parseLong(infor));
             }
             else if(linkText.contains("Accuracy"))
             {
-                //System.out.println(infor);
                 user.setACC(Double.parseDouble(infor));
             }
             else if(linkText.contains("Count"))
             {
-                //System.out.println(infor);
                 user.setPC(Integer.parseInt(infor));
             }
             else if(linkText.contains("Time"))
             {
-                //System.out.println(infor);
                 user.setPT(Integer.parseInt(infor));
             }
             else if(linkText.contains("Total Score"))
             {
-                //System.out.println(infor);
                 user.setTS(Long.parseLong(infor));
             }
             else if(linkText.contains("Level"))
             {
-                //System.out.println(infor);
                 user.setLv(Integer.parseInt(infor));
             }
             else if(linkText.contains("Hits"))
             {
-                //System.out.println(infor);
                 user.setTTH(Long.parseLong(infor));
             }
             else if(linkText.contains("Combo"))
             {
-                //System.out.println(infor);
                 user.setMaxCombo(Integer.parseInt(infor));
             }
             else if(linkText.contains("Kudosu"))
             {
-                //System.out.println(infor);
                 user.setKudosu(Integer.parseInt(infor));
             }
             else if(linkText.contains("Replays"))
             {
-                //System.out.println(infor);
                 user.setReplays(Integer.parseInt(infor));
             }
         }
@@ -400,12 +398,12 @@ public class spider {
         String url = "https://osu.ppy.sh/p/pp/?m=0&s=3&o=1&f=0&page=2033345";
         spider spider = new spider(url);
 
-/*
+
         List<String> dataList=new ArrayList<String>();
         dataList.add("1,张三,男");
         dataList.add("2,李四,男");
         dataList.add("3,小红,女");
         boolean isSuccess=CSVUtils.exportCsv(new File("E:/python/ljq.csv"), dataList);
-        */
+
     }
 }
