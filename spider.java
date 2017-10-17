@@ -161,7 +161,7 @@ public class spider {
                 }
                 if (mod.equals(""))
                     mod = "none";
-                //System.out.println("mod is:" + mod);
+                System.out.println("mod is:" + mod);
 
                 beatMapInfo map;
                 if (!beatMapDB.containsKey(bid)) {
