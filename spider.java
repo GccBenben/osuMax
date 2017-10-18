@@ -61,7 +61,7 @@ public class spider {
 
     private void getUsersLink()
     {
-        for(int i = 0; i < 20; i++)
+        for(int i = 0; i < rankingUrls.size(); i++)
         {
             Document rankingPage = Get_Url(rankingUrls.get(i));
             getRankingInfo(rankingPage,i);
