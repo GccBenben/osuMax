@@ -36,7 +36,8 @@ public class bpInfo extends beatMapInfo{
 
     public String out()
     {
-        return songName + "  AR:" + AR + "  CS:" + CS + "  OD:" + OD + "  BPM:" + BPM + "  star:" + star +
+        return songName + "  AR:" + AR + "  real AR:" + getAR() + "  CS:" + CS + "  OD:" + OD +
+                "  BPM:" + BPM + "  real BPM:" + getBPM() + "  star:" + star +
                 "  HP" + HP + "  Length:" + length + " MOD: " + getMod() + "   PP: " + test;
     }
 
@@ -51,6 +52,36 @@ public class bpInfo extends beatMapInfo{
         else
             return BPM;
     }
+
+    public double getAR()
+    {
+        String mod = getMod();
+        //System.out.println("mod is " + mod);
+        double ar = AR;
+        if(mod.contains("HR"))
+            ar = ar * 1.4 > 10 ? 10 : ar * 1.4;
+
+        double ms = ms_cal(ar);
+        //System.out.println("ms is " + ms);
+        if(mod.contains("DT") || mod.contains("NC"))
+            ms = ms * 2 / 3;
+        if(mod.contains("HT"))
+            ms = ms *  4 / 3;
+
+        //System.out.println("ms is " + ms);
+        return ar_cal(ms);
+    }
+
+    private double ms_cal(double ar)
+    {
+        return ar >= 5 ?  1200 - (ar - 5) * 150 : 1800 - ar * 120;
+    }
+
+    private double ar_cal(double ms)
+    {
+        return ms >= 1200 ? (1800 - ms) / 120 : (1200 - ms) / 150 + 5;
+    }
+
     private String getMod()
     {
         String result ="";
