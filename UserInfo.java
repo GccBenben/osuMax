@@ -22,6 +22,9 @@ public class UserInfo {
     private int replays;
     private int UID;
     private bpInfo[] bp = new bpInfo[100];
+    int[] bpm_classify = new int[8];
+    int[] ar_classify  = new int[5];
+    int[] mod_classify = new int[9];
 
     public void outInfo()
     {
@@ -41,7 +44,7 @@ public class UserInfo {
     public void addBP(bpInfo newBP, int count)
     {
         bp[count] = newBP;
-        System.out.println(newBP.out());
+        //System.out.println(newBP.out());
     }
 
     public void setID(String ID)
@@ -135,13 +138,21 @@ public class UserInfo {
     public String getBpUrl_1(){ return bpUrl_1;}
     public String getBpUrl_2(){ return bpUrl_2;}
 
+    public String out_put_info()
+    {
+        String result = userId + "," + rankedScore + "," + performance + "," + ACC + "," + PC + "," + PT + "," +
+                totalScore + "," + TTH + "," + maxCombo + "," + replays + "," + mod_classify[0] + "," +
+                mod_classify[1] + "," + mod_classify[2] + "," + mod_classify[3] + "," + mod_classify[4] + "," +
+                mod_classify[5] + "," + mod_classify[6] + ","+ mod_classify[7] + "," + mod_classify[8]+ "," + ar_classify[0] + "," +
+                ar_classify[1] + "," + ar_classify[2] + "," + ar_classify[3] + "," + ar_classify[4] + "," +
+                bpm_classify[0] + "," +bpm_classify[1] + "," + bpm_classify[2] + "," + bpm_classify[3] + "," +
+                bpm_classify[4] + "," + bpm_classify[5] + "," + bpm_classify[6] + "," + bpm_classify[7] + ",";
+        return result;
+    }
+
     public void anayliseBP()
     {
         //System.out.println(bp.length);
-
-        int[] bpm_classify = new int[8];
-        int[] ar_classify  = new int[5];
-        int[] mod_classify = new int[8];
         for(bpInfo theBP : bp)
         {
             bpm_anaylise(theBP, bpm_classify);
@@ -153,16 +164,31 @@ public class UserInfo {
                 +"  260-: " + bpm_classify[4] +"  280-: " + bpm_classify[5] +"  300-: " + bpm_classify[6] +"  300+: " + bpm_classify[7]);
         System.out.println("9.2-: " + ar_classify[0] +"  9.6-: " + ar_classify[1] +"  10-: " + ar_classify[2] +"  10.4-: " + ar_classify[3]
                 +"  10.4+: " + ar_classify[4]);
+        System.out.println("none: " + mod_classify[0] +"  HD: " + mod_classify[1] +"  HR: " + mod_classify[2] +"  HDHR: " + mod_classify[3]
+                +"  DT/NC: " + mod_classify[4] +"  HDDT/HDNC: " + mod_classify[5] +"  HDHRDT/NC: " + mod_classify[6]);
     }
 
     private void mod_anaylise(bpInfo bp, int[] classify)
     {
         String mod = bp.getMod();
-        if((mod.contains("DT") || mod.contains("NC") && mod.contains("HR"))
+        if(mod.contains("EZ"))
+            classify[7]++;
+        else if((mod.contains("DT") || mod.contains("NC")) && mod.contains("HR"))
             classify[6]++;
-        else if(mod.contains("DT") || mod.contains("NC"))
+        else if((mod.contains("DT") || mod.contains("NC")) && mod.contains("HD"))
             classify[5]++;
-
+        else if(mod.contains("DT") || mod.contains("NC"))
+            classify[4]++;
+        else if(mod.contains("HR") && mod.contains("HD"))
+            classify[3]++;
+        else if(mod.contains("HR"))
+            classify[2]++;
+        else if(mod.contains("HD"))
+            classify[1]++;
+        else if(mod.contains("SO") || mod.contains("NF"))
+            classify[8]++;
+        else
+            classify[0]++;
     }
     private void ar_anaylise(bpInfo bp, int[] classify)
     {
