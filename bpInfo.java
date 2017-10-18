@@ -72,6 +72,14 @@ public class bpInfo extends beatMapInfo{
         return ar_cal(ms);
     }
 
+    public String getMod()
+    {
+        String result ="";
+        for(String s : MOD)
+            result += s + " ";
+        return result;
+    }
+
     private double ms_cal(double ar)
     {
         return ar >= 5 ?  1200 - (ar - 5) * 150 : 1800 - ar * 120;
@@ -82,11 +90,5 @@ public class bpInfo extends beatMapInfo{
         return ms >= 1200 ? (1800 - ms) / 120 : (1200 - ms) / 150 + 5;
     }
 
-    private String getMod()
-    {
-        String result ="";
-        for(String s : MOD)
-            result += s + " ";
-        return result;
-    }
+
 }
