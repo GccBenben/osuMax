@@ -141,10 +141,12 @@ public class UserInfo {
 
         int[] bpm_classify = new int[8];
         int[] ar_classify  = new int[5];
+        int[] mod_classify = new int[8];
         for(bpInfo theBP : bp)
         {
             bpm_anaylise(theBP, bpm_classify);
             ar_anaylise(theBP, ar_classify);
+            mod_anaylise(theBP, mod_classify);
             //System.out.print("bpm is " + theBP.getBPM());
         }
         System.out.println("180-: " + bpm_classify[0] +"  200-: " + bpm_classify[1] +"  220-: " + bpm_classify[2] +"  240-: " + bpm_classify[3]
@@ -153,6 +155,15 @@ public class UserInfo {
                 +"  10.4+: " + ar_classify[4]);
     }
 
+    private void mod_anaylise(bpInfo bp, int[] classify)
+    {
+        String mod = bp.getMod();
+        if((mod.contains("DT") || mod.contains("NC") && mod.contains("HR"))
+            classify[6]++;
+        else if(mod.contains("DT") || mod.contains("NC"))
+            classify[5]++;
+
+    }
     private void ar_anaylise(bpInfo bp, int[] classify)
     {
         double ar = bp.getAR();
