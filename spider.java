@@ -61,7 +61,7 @@ public class spider {
 
     private void getUsersLink()
     {
-        for(int i = 0; i < 1; i++)
+        for(int i = 0; i < 20; i++)
         {
             Document rankingPage = Get_Url(rankingUrls.get(i));
             getRankingInfo(rankingPage,i);
@@ -87,6 +87,9 @@ public class spider {
         //Element user_ID = doc.getElementsByAttributeValue("href","/u/124493").first();
         //String test = user_ID.outerHtml();
         int rank = page * 50 + 1;
+        List<String> dataList=new ArrayList<String>();
+        dataList.add("ID,RankedScore,PP,ACC,PC,PT,TTS,TTH,MaxCB,RWBO,none,HD,HR,HDHR,DT,HDDT,HDHRDT,EZ,SO/NF,<9.2," +
+                "<9.6,<10,<10.4,>10.4,<180,<200,<220,<240,<260,<280,<300,>300,");
         for(Element as : a)
         {
             String linkUrl = as.attr("href");
@@ -102,9 +105,15 @@ public class spider {
             userList.put(rank,user);
             user.outInfo();
             user.anayliseBP();
+            dataList.add(user.out_put_info());
             rank++;
             System.out.println("\n\n\n");
+            //boolean isSuccess=CSVUtils.exportCsv(new File("E:/python/data.csv"), dataList);
+            //System.out.println(isSuccess);
+            //return;
         }
+        boolean isSuccess=CSVUtils.exportCsv(new File("E:/python/data.csv"), dataList);
+        System.out.println(isSuccess);
     }
 
     private String getNumbers(String input)
@@ -159,6 +168,12 @@ public class spider {
                 }
                 if (text.contains("HT")) {
                     mod += "HT,";
+                }
+                if (text.contains("SO")) {
+                    mod += "SO,";
+                }
+                if (text.contains("NF")) {
+                    mod += "NF,";
                 }
                 if (mod.equals(""))
                     mod = "none";
@@ -400,11 +415,11 @@ public class spider {
         spider spider = new spider(url);
 
 
-        List<String> dataList=new ArrayList<String>();
+        /*List<String> dataList=new ArrayList<String>();
         dataList.add("1,张三,男");
         dataList.add("2,李四,男");
         dataList.add("3,小红,女");
         boolean isSuccess=CSVUtils.exportCsv(new File("E:/python/ljq.csv"), dataList);
-
+*/
     }
 }
