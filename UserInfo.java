@@ -137,21 +137,70 @@ public class UserInfo {
 
     public void anayliseBP()
     {
-        System.out.println(bp.length);
-        int bpm_180 = 0;
-        int bpm_200 = 0;
-        int bpm_220 = 0;
-        int bpm_240 = 0;
-        int bpm_260 = 0;
-        int bpm_280 = 0;
-        int bpm_300 = 0;
-        int bpm_300plus = 0;
+        //System.out.println(bp.length);
+
+        int[] bpm_classify = new int[8];
         for(bpInfo theBP : bp)
         {
-            theBP.getBPM();
+            bpm_anaylise(theBP, bpm_classify);
+            //System.out.print("bpm is " + theBP.getBPM());
         }
+        System.out.println("180-: " + bpm_classify[0] +"  200-: " + bpm_classify[1] +"  220-: " + bpm_classify[2] +"  240-: " + bpm_classify[3]
+                +"  260-: " + bpm_classify[4] +"  280-: " + bpm_classify[5] +"  300-: " + bpm_classify[6] +"  300+: " + bpm_classify[7]);
     }
 
+    private void ar_anaylise(bpInfo bp, int[] classify)
+    {
+
+    }
+    private void bpm_anaylise(bpInfo bp, int[] classify)
+    {
+        double bpm = bp.getBPM();
+        System.out.print("bpm is " + bpm);
+        if(bpm > 240)
+        {
+            if(bpm> 280)
+            {
+                if(bpm > 300)
+                    classify[7]++;
+                    //System.out.println("   300+");
+                else
+                    classify[6]++;
+                //System.out.println("   280-300");
+            }
+            else
+            {
+                if(bpm > 260)
+                    classify[5]++;
+                    //System.out.println("   280-280");
+                else
+                    classify[4]++;
+                //System.out.println("  240-260");
+            }
+        }
+        else
+        {
+            if(bpm > 200)
+            {
+                if(bpm > 220)
+                    classify[3]++;
+                    //System.out.println("  220-240");
+                else
+                    classify[2]++;
+                //System.out.println("  200-220");
+            }
+            else
+            {
+                if(bpm > 180)
+                    classify[1]++;
+                    //System.out.println("  180-200");
+                else
+                    classify[0]++;
+                //System.out.println("  180-");
+
+            }
+        }
+    }
     private void setLink()
     {
         pageLink = "https://osu.ppy.sh/u/" + UID;

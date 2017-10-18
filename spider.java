@@ -168,7 +168,7 @@ public class spider {
                 if (!beatMapDB.containsKey(bid)) {
                     map = new beatMapInfo(bpName, bid);
                     getSongInfo(map);
-                    //map.Out();
+                    map.Out();
                     beatMapDB.put(bid, map);
                 } else {
                     map = beatMapDB.get(bid);
@@ -256,7 +256,7 @@ public class spider {
                 if (!beatMapDB.containsKey(bid)) {
                     map = new beatMapInfo(bpName, bid);
                     getSongInfo(map);
-                    //map.Out();
+                    map.Out();
                     beatMapDB.put(bid, map);
                 } else {
                     map = beatMapDB.get(bid);
