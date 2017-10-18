@@ -43,12 +43,13 @@ public class bpInfo extends beatMapInfo{
     public double getBPM()
     {
         String mod = getMod();
-        if(mod.contains("none"))
-            return BPM;
-        else if(mod.contains("DT") || mod.contains("NC"))
+        //System.out.println("mod is " + mod);
+        if(mod.contains("DT") || mod.contains("NC"))
             return BPM * 1.5 > 160 ? BPM * 1.5:BPM * 1.5 * 2;
+        else if(mod.contains("HT"))
+            return BPM * 0.75;
         else
-            return 0;
+            return BPM;
     }
     private String getMod()
     {
