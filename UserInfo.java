@@ -41,7 +41,7 @@ public class UserInfo {
     public void addBP(bpInfo newBP, int count)
     {
         bp[count] = newBP;
-        //System.out.println(newBP.out());
+        System.out.println(newBP.out());
     }
 
     public void setID(String ID)
@@ -140,23 +140,37 @@ public class UserInfo {
         //System.out.println(bp.length);
 
         int[] bpm_classify = new int[8];
+        int[] ar_classify  = new int[5];
         for(bpInfo theBP : bp)
         {
             bpm_anaylise(theBP, bpm_classify);
+            ar_anaylise(theBP, ar_classify);
             //System.out.print("bpm is " + theBP.getBPM());
         }
         System.out.println("180-: " + bpm_classify[0] +"  200-: " + bpm_classify[1] +"  220-: " + bpm_classify[2] +"  240-: " + bpm_classify[3]
                 +"  260-: " + bpm_classify[4] +"  280-: " + bpm_classify[5] +"  300-: " + bpm_classify[6] +"  300+: " + bpm_classify[7]);
+        System.out.println("9.2-: " + ar_classify[0] +"  9.6-: " + ar_classify[1] +"  10-: " + ar_classify[2] +"  10.4-: " + ar_classify[3]
+                +"  10.4+: " + ar_classify[4]);
     }
 
     private void ar_anaylise(bpInfo bp, int[] classify)
     {
-
+        double ar = bp.getAR();
+        if(ar < 9.2)
+            classify[0]++;
+        else if(ar < 9.6)
+            classify[1]++;
+        else if(ar < 10)
+            classify[2]++;
+        else if(ar < 10.4)
+            classify[3]++;
+        else
+            classify[4]++;
     }
     private void bpm_anaylise(bpInfo bp, int[] classify)
     {
         double bpm = bp.getBPM();
-        System.out.print("bpm is " + bpm);
+        //System.out.print("bpm is " + bpm);
         if(bpm > 240)
         {
             if(bpm> 280)
