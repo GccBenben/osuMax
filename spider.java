@@ -18,7 +18,6 @@ public class spider {
     private HashMap<Integer, UserInfo> userList;
     private HashMap<String, beatMapInfo> beatMapDB;
 
-
     public spider(String url)
     {
         targetUrl = url;
@@ -62,12 +61,7 @@ public class spider {
 
     private void getUsersLink()
     {
-        List<String> dataList = new ArrayList<String>();
-        dataList.add("ID,RankedScore,PP,ACC,PC,PT,TTS,TTH,MaxCB,RWBO,none,HD,HR,HDHR,DT,HDDT,HDHRDT,EZ,SO/NF,<9.2," +
-                "<9.6,<10,<10.4,>10.4,<180,<200,<220,<240,<260,<280,<300,>300,");
-        boolean isSuccess=CSVUtils.exportCsv(new File("E:/python/data.csv"), dataList);
-        System.out.println(isSuccess);
-        for(int i = 0; i < 50; i++)
+        for(int i = 0; i < rankingUrls.size(); i++)
         {
             Document rankingPage = Get_Url(rankingUrls.get(i));
             getRankingInfo(rankingPage,i);
@@ -86,8 +80,6 @@ public class spider {
         }
     }
 
-
-
     private void getRankingInfo(Document doc, int page)
     {
         UserInfo user;
@@ -95,7 +87,9 @@ public class spider {
         //Element user_ID = doc.getElementsByAttributeValue("href","/u/124493").first();
         //String test = user_ID.outerHtml();
         int rank = page * 50 + 1;
-        List<String> dataList = CSVUtils.importCsv(new File("E:/python/data.csv"));
+        List<String> dataList=new ArrayList<String>();
+        dataList.add("ID,RankedScore,PP,ACC,PC,PT,TTS,TTH,MaxCB,RWBO,none,HD,HR,HDHR,DT,HDDT,HDHRDT,EZ,SO/NF,<9.2," +
+                "<9.6,<10,<10.4,>10.4,<180,<200,<220,<240,<260,<280,<300,>300,");
         for(Element as : a)
         {
             String linkUrl = as.attr("href");
@@ -118,7 +112,7 @@ public class spider {
             //System.out.println(isSuccess);
             //return;
         }
-        boolean isSuccess = CSVUtils.exportCsv(new File("E:/python/data.csv"), dataList);
+        boolean isSuccess=CSVUtils.exportCsv(new File("E:/python/data.csv"), dataList);
         System.out.println(isSuccess);
     }
 
