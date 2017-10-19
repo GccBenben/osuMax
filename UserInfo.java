@@ -160,12 +160,12 @@ public class UserInfo {
             mod_anaylise(theBP, mod_classify);
             //System.out.print("bpm is " + theBP.getBPM());
         }
-        System.out.println("180-: " + bpm_classify[0] +"  200-: " + bpm_classify[1] +"  220-: " + bpm_classify[2] +"  240-: " + bpm_classify[3]
-                +"  260-: " + bpm_classify[4] +"  280-: " + bpm_classify[5] +"  300-: " + bpm_classify[6] +"  300+: " + bpm_classify[7]);
-        System.out.println("9.2-: " + ar_classify[0] +"  9.6-: " + ar_classify[1] +"  10-: " + ar_classify[2] +"  10.4-: " + ar_classify[3]
-                +"  10.4+: " + ar_classify[4]);
-        System.out.println("none: " + mod_classify[0] +"  HD: " + mod_classify[1] +"  HR: " + mod_classify[2] +"  HDHR: " + mod_classify[3]
-                +"  DT/NC: " + mod_classify[4] +"  HDDT/HDNC: " + mod_classify[5] +"  HDHRDT/NC: " + mod_classify[6]);
+        //System.out.println("180-: " + bpm_classify[0] +"  200-: " + bpm_classify[1] +"  220-: " + bpm_classify[2] +"  240-: " + bpm_classify[3]
+                //+"  260-: " + bpm_classify[4] +"  280-: " + bpm_classify[5] +"  300-: " + bpm_classify[6] +"  300+: " + bpm_classify[7]);
+        //System.out.println("9.2-: " + ar_classify[0] +"  9.6-: " + ar_classify[1] +"  10-: " + ar_classify[2] +"  10.4-: " + ar_classify[3]
+                //+"  10.4+: " + ar_classify[4]);
+        //System.out.println("none: " + mod_classify[0] +"  HD: " + mod_classify[1] +"  HR: " + mod_classify[2] +"  HDHR: " + mod_classify[3]
+                //+"  DT/NC: " + mod_classify[4] +"  HDDT/HDNC: " + mod_classify[5] +"  HDHRDT/NC: " + mod_classify[6]);
     }
 
     private void mod_anaylise(bpInfo bp, int[] classify)
