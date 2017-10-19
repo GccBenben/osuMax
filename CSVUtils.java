@@ -64,6 +64,33 @@ public class CSVUtils {
         return isSucess;
     }
 
+    public static boolean appendDate(File csvFile, List<List<String>> data){
+        try {
+
+            BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(csvFile, true), "GBK"), 1024);
+            for(int i=0; i<data.size(); i++){
+                List tempData = data.get(i);
+                StringBuffer sb = new StringBuffer();
+                for(int j=0; j<tempData.size(); j++){
+                    if(j<tempData.size()-1)
+                        sb.append(tempData.get(j)+",");
+                    else
+                        sb.append(tempData.get(j)+"\r\n");
+                }
+                bw.write(sb.toString());
+                if(i%1000==0)
+                    bw.flush();
+            }
+            bw.flush();
+            bw.close();
+
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
     /**
      * 导入
      *
