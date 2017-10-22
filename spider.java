@@ -21,12 +21,12 @@ public class spider {
 
     public spider(String url)
     {
-        //targetUrl = url;
-        //createUserDatebase();
-        //createBeatMapDatebase();
-        //enumRankingPageUrl();
-        //getUsersLink();
-        unitTest();
+        targetUrl = url;
+        createUserDatebase();
+        createBeatMapDatebase();
+        enumRankingPageUrl();
+        getUsersLink();
+        //unitTest();
 
         //Document contents = Get_Url(targetUrl);
         //getGeneralInfo(contents, user);
@@ -86,10 +86,10 @@ public class spider {
     {
         //List<String> dataList = new ArrayList<String>();
         //dataList.add("ID,RankedScore,PP,ACC,PC,PT,TTS,TTH,MaxCB,RWBO,none,HD,HR,HDHR,DT,HDDT,HDHRDT,EZ,SO/NF,<9.2," +
-                //"<9.6,<10,<10.4,>10.4,<180,<200,<220,<240,<260,<280,<300,>300,");
+                //"<9.6,<10,<10.4,>10.4,<180,<200,<220,<240,<260,<280,<300,>300,contry,");
         //boolean isSuccess=CSVUtils.exportCsv(new File("E:/python/data.csv"), dataList);
         //System.out.println(isSuccess);
-        for(int i = 61; i < 200; i++)
+        for(int i = 1; i < 200; i++)
         {
             Document rankingPage = Get_Url(rankingUrls.get(i));
             getRankingInfo(rankingPage,i);
@@ -330,7 +330,9 @@ public class spider {
     private void getGeneralInfo(UserInfo user)
     {
         String userGeneralUrl = user.getInfoUrl();
-
+        Document userPage = Get_Url(user.getPageUrl());
+        String contry = userPage.select("img[class=flag]").first().attr("title");
+        user.setContry(contry);
         Elements general_Info = Get_Url(userGeneralUrl).select("div.profileStatLine");
         for (Element info : general_Info)
         {
