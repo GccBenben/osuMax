@@ -84,12 +84,12 @@ public class spider {
 
     private void getUsersLink()
     {
-        //List<String> dataList = new ArrayList<String>();
-        //dataList.add("ID,RankedScore,PP,ACC,PC,PT,TTS,TTH,MaxCB,RWBO,none,HD,HR,HDHR,DT,HDDT,HDHRDT,EZ,SO/NF,<9.2," +
-                //"<9.6,<10,<10.4,>10.4,<180,<200,<220,<240,<260,<280,<300,>300,contry,");
-        //boolean isSuccess=CSVUtils.exportCsv(new File("E:/python/data.csv"), dataList);
-        //System.out.println(isSuccess);
-        for(int i = 1; i < 200; i++)
+        List<String> dataList = new ArrayList<String>();
+        dataList.add("ID,RankedScore,PP,ACC,PC,PT,TTS,TTH,MaxCB,RWBO,none,HD,HR,HDHR,DT,HDDT,HDHRDT,EZ,SO/NF,<9.2," +
+                "<9.6,<10,<10.4,>10.4,<180,<200,<220,<240,<260,<280,<300,>300,contry,rageDate,logInDate");
+        boolean isSuccess=CSVUtils.exportCsv(new File("E:/python/data.csv"), dataList);
+        System.out.println(isSuccess);
+        for(int i = 0; i < 200; i++)
         {
             Document rankingPage = Get_Url(rankingUrls.get(i));
             getRankingInfo(rankingPage,i);
@@ -332,6 +332,9 @@ public class spider {
         String userGeneralUrl = user.getInfoUrl();
         Document userPage = Get_Url(user.getPageUrl());
         String contry = userPage.select("img[class=flag]").first().attr("title");
+        String regDate = userPage.select("time[class=timeago]").get(0).text();
+        String lastDate = userPage.select("time[class=timeago]").get(1).text();
+        user.setDate(lastDate, regDate);
         user.setContry(contry);
         Elements general_Info = Get_Url(userGeneralUrl).select("div.profileStatLine");
         for (Element info : general_Info)

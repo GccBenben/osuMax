@@ -10,6 +10,8 @@ public class UserInfo {
     private String bpUrl_1;
     private String bpUrl_2;
     private String contry;
+    private String regDate;
+    private String logInDate;
     private int performance;
     private long rankedScore;
     private long totalScore;
@@ -63,6 +65,12 @@ public class UserInfo {
     {
         performance = value;
         //System.out.println("value is " + value + "!!!");
+    }
+
+    public void setDate(String lastDate, String firstDate)
+    {
+        regDate = firstDate;
+        logInDate = lastDate;
     }
 
     public void setRS(long value)
@@ -154,7 +162,7 @@ public class UserInfo {
                 ar_classify[1] + "," + ar_classify[2] + "," + ar_classify[3] + "," + ar_classify[4] + "," +
                 bpm_classify[0] + "," +bpm_classify[1] + "," + bpm_classify[2] + "," + bpm_classify[3] + "," +
                 bpm_classify[4] + "," + bpm_classify[5] + "," + bpm_classify[6] + "," + bpm_classify[7] + ","+
-                contry + ",";
+                contry + "," + regDate + "," + logInDate + ",";
         return result;
     }
 
