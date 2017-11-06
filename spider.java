@@ -22,10 +22,7 @@ public class spider {
     public spider(String url)
     {
         targetUrl = url;
-        createUserDatebase();
-        createBeatMapDatebase();
-        enumRankingPageUrl();
-        getUsersLink();
+
         //unitTest();
 
         //Document contents = Get_Url(targetUrl);
@@ -61,7 +58,7 @@ public class spider {
                     .data("query", "Java")
                     .userAgent("Mozilla")
                     .cookie("auth", "token")
-                    .timeout(3000)
+                    .timeout(6000)
                     //.post()
                     .get();
 
@@ -148,7 +145,7 @@ public class spider {
         System.out.println(isSuccess ? "Writing into file success" : "Wriiting into file fail");
     }
 
-    private String getNumbers(String input)
+    public static String getNumbers(String input)
     {
         String reg = "[^.0-9]";
         Pattern p = Pattern.compile(reg);
@@ -396,6 +393,10 @@ public class spider {
     {
         String url = "https://osu.ppy.sh/p/pp/?m=0&s=3&o=1&f=0&page=2033345";
         spider spider = new spider(url);
+        spider.createUserDatebase();
+        spider.createBeatMapDatebase();
+        spider.enumRankingPageUrl();
+        spider.getUsersLink();
 
 
         /*List<String> dataList=new ArrayList<String>();
