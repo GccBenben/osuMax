@@ -22,7 +22,15 @@ public class CostFinder {
 
     private void findCost(Document doc)
     {
-        //Elements ppPlusInfo = ;
+        Elements ppPlusInfo = doc.select("h2");
+        for(Element test : ppPlusInfo)
+        {
+            if(test.text().contains("Your player is in another castle!"))
+            {
+                System.out.println("can not find this player");
+                return;
+            }
+        }
         int aimJump = Integer.parseInt(spider.getNumbers(doc.select("tr[class=perform-aim]").get(1).text()));
         int aimFlow = Integer.parseInt(spider.getNumbers(doc.select("tr[class=perform-aim]").get(2).text()));
         int precision = Integer.parseInt(spider.getNumbers(doc.select("tr[class=perform-aim]").get(3).text()));
