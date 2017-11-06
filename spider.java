@@ -18,6 +18,7 @@ public class spider {
     private HashMap<Integer, UserInfo> userList;
     private HashMap<String, beatMapInfo> beatMapDB;
 
+
     public spider(String url)
     {
         targetUrl = url;
@@ -25,10 +26,32 @@ public class spider {
         createBeatMapDatebase();
         enumRankingPageUrl();
         getUsersLink();
+        //unitTest();
 
         //Document contents = Get_Url(targetUrl);
-        //getGenerelInfo(contents, user);
+        //getGeneralInfo(contents, user);
     }
+
+    private void unitTest()
+    {
+        String link ="https://osu.ppy.sh/u/3087159";
+        //getRankingInfo(Get_Url(link),1);
+        createBeatMapDatebase();
+        searchUser("BtCCCY", 1039355);
+    }
+
+    private void searchUser(String userId, int uid)
+    {
+        UserInfo user = new UserInfo(userId, uid);
+        getGeneralInfo(user);
+        user.outInfo();
+        getBpInfo(user);
+        //user.outInfo();
+        user.anayliseBP();
+        user.outInfo();
+        System.out.println(user.out_put_info());
+    }
+
     public Document Get_Url(String url)
     {
         try
@@ -61,7 +84,12 @@ public class spider {
 
     private void getUsersLink()
     {
-        for(int i = 0; i < rankingUrls.size(); i++)
+        //List<String> dataList = new ArrayList<String>();
+        //dataList.add("ID,RankedScore,PP,ACC,PC,PT,TTS,TTH,MaxCB,RWBO,none,HD,HR,HDHR,DT,HDDT,HDHRDT,EZ,SO/NF,<9.2," +
+                //"<9.6,<10,<10.4,>10.4,<180,<200,<220,<240,<260,<280,<300,>300,contry,");
+        //boolean isSuccess=CSVUtils.exportCsv(new File("E:/python/data.csv"), dataList);
+        //System.out.println(isSuccess);
+        for(int i = 1; i < 200; i++)
         {
             Document rankingPage = Get_Url(rankingUrls.get(i));
             getRankingInfo(rankingPage,i);
@@ -80,6 +108,8 @@ public class spider {
         }
     }
 
+
+
     private void getRankingInfo(Document doc, int page)
     {
         UserInfo user;
@@ -87,24 +117,26 @@ public class spider {
         //Element user_ID = doc.getElementsByAttributeValue("href","/u/124493").first();
         //String test = user_ID.outerHtml();
         int rank = page * 50 + 1;
-        List<String> dataList=new ArrayList<String>();
-        dataList.add("ID,RankedScore,PP,ACC,PC,PT,TTS,TTH,MaxCB,RWBO,none,HD,HR,HDHR,DT,HDDT,HDHRDT,EZ,SO/NF,<9.2," +
-                "<9.6,<10,<10.4,>10.4,<180,<200,<220,<240,<260,<280,<300,>300,");
+        List<String> dataList = CSVUtils.importCsv(new File("E:/python/data.csv"));
         for(Element as : a)
         {
             String linkUrl = as.attr("href");
             String userId = as.text();
+            System.out.println("Start searching for " + userId);
             String reg = "[^0-9]";
             Pattern p = Pattern.compile(reg);
             Matcher m = p.matcher(linkUrl);
             int uid = Integer.parseInt(m.replaceAll("").trim());
             user = new UserInfo(userId, uid);
-            getGenerelInfo(user);
+            getGeneralInfo(user);
+            System.out.println("General information got.");
             getBpInfo(user);
+            System.out.println("BP information got.");
             user.setRank(rank);
             userList.put(rank,user);
             user.outInfo();
             user.anayliseBP();
+            System.out.println("BP analyse down.");
             dataList.add(user.out_put_info());
             rank++;
             System.out.println("\n\n\n");
@@ -112,8 +144,8 @@ public class spider {
             //System.out.println(isSuccess);
             //return;
         }
-        boolean isSuccess=CSVUtils.exportCsv(new File("E:/python/data.csv"), dataList);
-        System.out.println(isSuccess);
+        boolean isSuccess = CSVUtils.exportCsv(new File("E:/python/data.csv"), dataList);
+        System.out.println(isSuccess ? "Writing into file success" : "Wriiting into file fail");
     }
 
     private String getNumbers(String input)
@@ -130,10 +162,9 @@ public class spider {
         String userBpUrl_2 = user.getBpUrl_2();
         int count = 0;
 
-
         String bid = "";
         String mod = "";
-        bpInfo newBP = new bpInfo();;
+        bpInfo newBP = new bpInfo();
         Elements bpInfo_1 = Get_Url(userBpUrl_1).select("b");
         for(Element bp : bpInfo_1)
         {
@@ -188,6 +219,7 @@ public class spider {
                 } else {
                     map = beatMapDB.get(bid);
                     System.out.println("database have this map!");
+                    //map.Out();
                     //beatMapDB.get(bid).Out();
                 }
                 newBP = new bpInfo(map, mod);
@@ -203,29 +235,6 @@ public class spider {
                 }
             }
         }
-/*
-            Elements bpInfo = doc.select("a[href~=/b]");
-            for(Element bp : bpInfo)
-            {
-                String bpName = bp.text();
-                String bid = bp.attr("href");
-                //System.out.println(bpName + "   " + bpLink);
-                if(!beatMapDB.containsKey(bid))
-                {
-                    beatMapInfo map = new beatMapInfo(bpName, bid);
-                    getSongInfo(map);
-                    map.Out();
-                    user.addBP(map,count);
-                    beatMapDB.put(bid,map);
-                }
-                else
-                {
-                    user.addBP(beatMapDB.get(bid), count);
-                    System.out.println("database have this map!");
-                    beatMapDB.get(bid).Out();
-                }
-                count++;
-            }*/
 
 
         Elements bpInfo_2 = Get_Url(userBpUrl_2).select("b");
@@ -276,6 +285,7 @@ public class spider {
                 } else {
                     map = beatMapDB.get(bid);
                     System.out.println("database have this map!");
+                    //map.Out();
                     //beatMapDB.get(bid).Out();
                 }
                 newBP = new bpInfo(map, mod);
@@ -292,35 +302,6 @@ public class spider {
                 }
             }
         }
-        /*try {
-            Document doc = Jsoup.connect(userBpUrl_2)
-                    .ignoreContentType(true)
-                    .data("query", "Java")
-                    .userAgent("Mozilla")
-                    .cookie("auth", "token")
-                    .timeout(3000)
-                    //.post()
-                    .get();
-
-            Elements bpInfo = doc.select("a[href~=/b]");
-            for(Element bp : bpInfo)
-            {
-                String bpName = bp.text();
-                String bid = bp.attr("href");
-                //System.out.println(bpName + "   " + bpLink);
-                if(!beatMapDB.containsKey(bid))
-                {
-                    beatMapInfo map = new beatMapInfo(bpName, bid);
-                    getSongInfo(map);
-                    map.Out();
-                    user.addBP(map,count);
-                    beatMapDB.put(bid,map);
-                }
-                else
-                    user.addBP(beatMapDB.get(bid),count);
-                count++;
-            }
-        }*/
     }
 
     private void getSongInfo(beatMapInfo map)
@@ -346,12 +327,14 @@ public class spider {
         map.setInfo(info, bpm, drain);
     }
 
-    private void getGenerelInfo(UserInfo user)
+    private void getGeneralInfo(UserInfo user)
     {
-        String userGenerelUrl = user.getInfoUrl();
-
-        Elements generel_Info = Get_Url(userGenerelUrl).select("div.profileStatLine");
-        for (Element info : generel_Info)
+        String userGeneralUrl = user.getInfoUrl();
+        Document userPage = Get_Url(user.getPageUrl());
+        String contry = userPage.select("img[class=flag]").first().attr("title");
+        user.setContry(contry);
+        Elements general_Info = Get_Url(userGeneralUrl).select("div.profileStatLine");
+        for (Element info : general_Info)
         {
             String linkText = info.text();
             //System.out.println(linkText);

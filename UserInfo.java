@@ -1,5 +1,7 @@
 import java.beans.beancontext.BeanContext;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class UserInfo {
     private String userId;
@@ -7,6 +9,7 @@ public class UserInfo {
     private String infoUrl;
     private String bpUrl_1;
     private String bpUrl_2;
+    private String contry;
     private int performance;
     private long rankedScore;
     private long totalScore;
@@ -21,7 +24,8 @@ public class UserInfo {
     private int kudosu;
     private int replays;
     private int UID;
-    private bpInfo[] bp = new bpInfo[100];
+    //private bpInfo[] bp = new bpInfo[100];
+    private List<bpInfo> BP = new ArrayList<>();
     int[] bpm_classify = new int[8];
     int[] ar_classify  = new int[5];
     int[] mod_classify = new int[9];
@@ -43,9 +47,12 @@ public class UserInfo {
 
     public void addBP(bpInfo newBP, int count)
     {
-        bp[count] = newBP;
+        //bp[count] = newBP;
+        BP.add(newBP);
         //System.out.println(newBP.out());
     }
+
+    public void setContry(String ct){contry = ct;}
 
     public void setID(String ID)
     {
@@ -134,7 +141,7 @@ public class UserInfo {
     {
         return infoUrl;
     }
-
+    public String getPageUrl(){ return pageLink;}
     public String getBpUrl_1(){ return bpUrl_1;}
     public String getBpUrl_2(){ return bpUrl_2;}
 
@@ -146,26 +153,28 @@ public class UserInfo {
                 mod_classify[5] + "," + mod_classify[6] + ","+ mod_classify[7] + "," + mod_classify[8]+ "," + ar_classify[0] + "," +
                 ar_classify[1] + "," + ar_classify[2] + "," + ar_classify[3] + "," + ar_classify[4] + "," +
                 bpm_classify[0] + "," +bpm_classify[1] + "," + bpm_classify[2] + "," + bpm_classify[3] + "," +
-                bpm_classify[4] + "," + bpm_classify[5] + "," + bpm_classify[6] + "," + bpm_classify[7] + ",";
+                bpm_classify[4] + "," + bpm_classify[5] + "," + bpm_classify[6] + "," + bpm_classify[7] + ","+
+                contry + ",";
         return result;
     }
 
     public void anayliseBP()
     {
         //System.out.println(bp.length);
-        for(bpInfo theBP : bp)
+        for(bpInfo theBP : BP)
         {
+            //System.out.println(theBP.name());
             bpm_anaylise(theBP, bpm_classify);
             ar_anaylise(theBP, ar_classify);
             mod_anaylise(theBP, mod_classify);
             //System.out.print("bpm is " + theBP.getBPM());
         }
-        //System.out.println("180-: " + bpm_classify[0] +"  200-: " + bpm_classify[1] +"  220-: " + bpm_classify[2] +"  240-: " + bpm_classify[3]
-                //+"  260-: " + bpm_classify[4] +"  280-: " + bpm_classify[5] +"  300-: " + bpm_classify[6] +"  300+: " + bpm_classify[7]);
-        //System.out.println("9.2-: " + ar_classify[0] +"  9.6-: " + ar_classify[1] +"  10-: " + ar_classify[2] +"  10.4-: " + ar_classify[3]
-                //+"  10.4+: " + ar_classify[4]);
-        //System.out.println("none: " + mod_classify[0] +"  HD: " + mod_classify[1] +"  HR: " + mod_classify[2] +"  HDHR: " + mod_classify[3]
-                //+"  DT/NC: " + mod_classify[4] +"  HDDT/HDNC: " + mod_classify[5] +"  HDHRDT/NC: " + mod_classify[6]);
+        System.out.println("180-: " + bpm_classify[0] +"  200-: " + bpm_classify[1] +"  220-: " + bpm_classify[2] +"  240-: " + bpm_classify[3]
+                +"  260-: " + bpm_classify[4] +"  280-: " + bpm_classify[5] +"  300-: " + bpm_classify[6] +"  300+: " + bpm_classify[7]);
+        System.out.println("9.2-: " + ar_classify[0] +"  9.6-: " + ar_classify[1] +"  10-: " + ar_classify[2] +"  10.4-: " + ar_classify[3]
+                +"  10.4+: " + ar_classify[4]);
+        System.out.println("none: " + mod_classify[0] +"  HD: " + mod_classify[1] +"  HR: " + mod_classify[2] +"  HDHR: " + mod_classify[3]
+                +"  DT/NC: " + mod_classify[4] +"  HDDT/HDNC: " + mod_classify[5] +"  HDHRDT/NC: " + mod_classify[6]);
     }
 
     private void mod_anaylise(bpInfo bp, int[] classify)
@@ -207,7 +216,7 @@ public class UserInfo {
     private void bpm_anaylise(bpInfo bp, int[] classify)
     {
         double bpm = bp.getBPM();
-        //System.out.print("bpm is " + bpm);
+        //System.out.println("bpm is " + bpm);
         if(bpm > 240)
         {
             if(bpm> 280)
