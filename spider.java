@@ -5,7 +5,7 @@ import org.jsoup.select.Elements;
 import java.util.List;
 import java.util.HashMap;
 import java.io.File;
-import java.util.ArrayList;
+
 import java.util.LinkedList;
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
@@ -58,7 +58,7 @@ public class spider {
                     .data("query", "Java")
                     .userAgent("Mozilla")
                     .cookie("auth", "token")
-                    .timeout(6000)
+                    .timeout(20000)
                     //.post()
                     .get();
 
